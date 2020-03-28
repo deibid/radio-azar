@@ -1,0 +1,5 @@
+#!/bin/bash
+# Script to send my directory to the Rasperry Pis all at once
+
+scp radio-azar.py pi@radioazar-1:~/Desktop
+# scp radio-azar.py pi@radioazar-2:~/Desktop
