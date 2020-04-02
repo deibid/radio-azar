@@ -49,7 +49,7 @@ class PubNubClient:
             .execute()
 
         # self.firebase_client = firebase_client  
-        # self.drecorder = drecorder
+        self.drecorder = drecorder
 
     def publish_callback(self,envelope, status):
         print('full circle')
@@ -58,7 +58,7 @@ class PubNubClient:
     def broadcastUploadedMessage(self):
         self.pubnub.publish()\
             .channel("pubnub_onboarding_channel")\
-            .message({"sender": pnconfig.uuid, "content": EVENT_UPLOADED_MESSAGE})\
+            .message({"sender": pnconfig.uuid, "content": EVENT_UPLOADED_MESSAGE, "url":self.drecorder.firebase_filename})\
             .pn_async(self.publish_callback)
 
 
