@@ -1,18 +1,24 @@
 import subprocess
 import os
 import signal
+import datetime
 
 class DRecorder:
 
   record_command = 'arecord -D hw:1,0  -f cd test.wav -c 1'
 
-  def __init__(self):
+  def __init__(self, uuid):
     self.filename = 'voice.wav'
-    pass
+    self.uuid = uuid
 
   def create_file_name(self):
-    pass
-    # self.filename = 'voice.wav'
+
+    dt = datetime.datetime.now()
+    dt = dt.strftime("%c")
+    dt = dt.replace(" ","-")
+    dt = dt.replace(":","-")
+    self.filename = "audio/"+self.uuid + "-"+dt
+    print("Filename->   "+self.filename)
 
   def prepare_file(self):
     self.create_file_name()

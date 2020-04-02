@@ -6,11 +6,12 @@ from pprint import pprint
 
 
 EVENT_UPLOADED_MESSAGE = "message_uploaded"
+UUID = "david"
 
 pnconfig = PNConfiguration()
 pnconfig.subscribe_key = "sub-c-5640dcb4-620c-11ea-9a99-f2f107c29c38"
 pnconfig.publish_key = "pub-c-3c259a14-9e90-49f0-bf85-03615209e485"
-pnconfig.uuid = "david"
+pnconfig.uuid = UUID
 
 class PubNubClient:
 

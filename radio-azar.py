@@ -11,12 +11,15 @@ from my_modules.FirebaseClient import FirebaseClient
 from my_modules.PubNubClient import PubNubClient
 from my_modules.DRecorder import DRecorder
 
+# Owner of this device.
+from my_modules.PubNubClient import UUID
+
 
 record_button = Button(2)
 play_button = Button(3)
 
 firebase_client = FirebaseClient()
-drecorder = DRecorder()
+drecorder = DRecorder(UUID)
 pubnub_client = PubNubClient(firebase_client,drecorder)
 
 
