@@ -18,9 +18,11 @@ from my_modules.PubNubClient import UUID
 record_button = Button(2)
 play_button = Button(3)
 
-firebase_client = FirebaseClient()
+
 drecorder = DRecorder(UUID)
+firebase_client = FirebaseClient(drecorder,UUID)
 pubnub_client = PubNubClient(firebase_client,drecorder)
+
 
 
 def main():

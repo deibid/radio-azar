@@ -8,7 +8,6 @@ class DRecorder:
   record_command = 'arecord -D hw:1,0  -f cd test.wav -c 1'
 
   def __init__(self, uuid):
-    self.filename = 'voice.wav'
     self.uuid = uuid
 
   def create_file_name(self):
@@ -17,12 +16,16 @@ class DRecorder:
     dt = dt.strftime("%c")
     dt = dt.replace(" ","-")
     dt = dt.replace(":","-")
-    self.filename = "audio/"+self.uuid + "-"+dt
+    
+    self.filename = self.uuid + "-"+dt+".wav"
+    self.local_system_filename = "audio/my_recordings/"+self.uuid + "-"+dt+".wav"
+    self.firebase_filename = "audio/"+self.uuid+"/"+self.filename
+
     print("Filename->   "+self.filename)
 
   def prepare_file(self):
     self.create_file_name()
-    self.record_command = 'arecord -D hw:1,0  -f cd '+ self.filename +' -c 1'
+    self.record_command = 'arecord -D hw:1,0  -f cd '+ self.local_system_filename +' -c 1'
 
   def start_recording(self):
     print('start recording')
