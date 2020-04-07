@@ -1,7 +1,8 @@
 import subprocess
 import os
 import signal
-import datetime
+import datetime, time
+
 
 class DRecorder:
 
@@ -20,6 +21,7 @@ class DRecorder:
     self.filename = self.uuid + "-"+dt+".wav"
     self.local_system_filename = "audio/my_recordings/"+self.uuid + "-"+dt+".wav"
     self.firebase_filename = "audio/"+self.uuid+"/"+self.filename
+    self.timestamp = time.time()
 
     print("Filename->   "+self.filename)
 

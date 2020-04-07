@@ -60,9 +60,17 @@ pygame.mixer.init()
 if __name__ == "__main__":
     main()
 
+
+def get_entries():
+    print('get entries')
+    firebase_client.fetch_relevant_recordings()
+
+
 # GPIO Events
-record_button.when_pressed = start_recording
-record_button.when_released = finish_recording
+record_button.when_pressed = get_entries
+# record_button.when_pressed = start_recording
+# record_button.when_released = finish_recording
+
 # play_button.when_pressed = playFiles
 play_button.when_pressed = download_file
 # Listen for events

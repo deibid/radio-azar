@@ -11,4 +11,6 @@ pip3 install pyrebase
 echo "\n\n--------------\n\n"
 pip3 install 'pubnub>=4.5.0'
 echo "\n\n--------------\n\n"
+pip3 install pendulum
+echo "\n\n--------------\n\n"
 echo "All libs installed! - Ready for Radio Azar"
