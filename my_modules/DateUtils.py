@@ -38,6 +38,10 @@ class DateUtils:
     return pendulum.parse(message.val()['time'])
     
 
+  @staticmethod
+  def create_date_from_timestamp(timestamp):
+    return pendulum.parse(timestamp)
+
     
 
 

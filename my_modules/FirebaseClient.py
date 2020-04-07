@@ -1,12 +1,14 @@
 import pyrebase
 import datetime, time
 from my_modules.DateUtils import DateUtils
+from my_modules.StorageUtils import StorageUtils
 import pendulum
 # storage.child("audio/audio").put("rec-3.mp3")
 
 class FirebaseClient:
 
     date_utils = DateUtils()
+    storage_utils = StorageUtils()
     
     firebase_config = {
        "apiKey": "",
@@ -71,6 +73,7 @@ class FirebaseClient:
                 # turn on this line if you want to exclude your messages
                 # if(message.val()["sender"] != self.uuid)
                 this_weeks_messages.append(message)
+
         
         # sorts the messages based on time. First message sent is at the top and last at the bottom
         this_weeks_messages = sorted(this_weeks_messages, key=self.date_utils.sort_criteria)
@@ -81,15 +84,10 @@ class FirebaseClient:
     def fetch_relevant_recordings(self):
 
         this_weeks_messages = self.get_data_for_relevant_recordings()
-        
 
-        # query the database
-        # filter entries to only leave the ones for this week
-            # lograr aritmetica basica con fehcas
-            # crear limites de la fecha
-
-            # filtrar que todo este dentro de estos limites
-
+        for msg in this_weeks_messages:
+            self.storage_utils.generate_filename_for_local_storage_download(msg)
+            
         # objtener lista de urls
         # bajar los archivos correspondientes
 
