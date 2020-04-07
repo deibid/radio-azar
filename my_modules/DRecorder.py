@@ -27,17 +27,26 @@ class DRecorder:
     self.record_command = 'arecord -D hw:1,0  -f cd '+ self.local_system_filename +' -c 1'
 
   def start_recording(self):
-    print('start recording')
+    # print('start recording')
     self.prepare_file()
 
     # Fancy stuff to make subprocess terminable
     self.sp = subprocess.Popen(self.record_command, stdout=subprocess.PIPE, 
                           shell=True, preexec_fn=os.setsid) 
+    
+    print('\n')
+    print('recording started')
+    print('\n')
 
 
   def stop_recording(self):
-    print('stop recording')
+    # print('stop recording')
     os.killpg(os.getpgid(self.sp.pid), signal.SIGTERM)
+    
+    print('\n')
+    print('recording finised')
+    print('\n')
+    
 
   def play_recording(self):
     subprocess.Popen("aplay "+"fb-"+self.filename, shell=True)

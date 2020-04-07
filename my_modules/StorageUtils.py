@@ -1,10 +1,9 @@
 import pendulum
-import datetime
-from my_modules.DateUtils import DateUtils
+# import datetime
+
 
 class StorageUtils:
 
-  # date_utils = DateUtils()
 
   def __init__(self):
     pass
@@ -30,10 +29,9 @@ class StorageUtils:
     valid_date_string = date_string.replace(":","-")
     valid_date_string = valid_date_string.replace(".","-")
     uuid = msg.val()['sender']
-
-    # filename = uuid + "-"+dt+".wav"
+  
     local_system_filename = "audio/others_recordings/"+ uuid + "-"+valid_date_string+".wav"
-    # local_system_filename = uuid + "-"+valid_date_string+".wav"
+  
     return local_system_filename
     
 
@@ -45,7 +43,6 @@ class StorageUtils:
     valid_date_string = valid_date_string.replace(".","-")
     uuid = sender
 
-    # filename = uuid + "-"+dt+".wav"
     cloud_system_filename = "audio/"+ uuid + "/"+uuid+"-"+valid_date_string+".wav"
     return cloud_system_filename
 

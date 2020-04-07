@@ -26,8 +26,8 @@ class FirebaseClient:
 
     def write_database_with_file(self,url):
         
-        print('attempting to write db')
-        print('----------------------')
+        # print('attempting to write db')
+        # print('----------------------')
 
         ref = self.db.child("messages/")
         key = ref.generate_key()
@@ -53,8 +53,11 @@ class FirebaseClient:
 
         ref.push(data)
 
+        print('\n')
+        print('----------------------')
         print('db write succesfull')
         print('----------------------')
+        print('\n')
 
 
 
@@ -96,10 +99,15 @@ class FirebaseClient:
     
 
     def download_file(self,remote_url, local_filename):
-        print('downloading file from Firebase\n')
-        print('remote path: '+remote_url)
-        print('local filename: '+local_filename+"\n")
+        # print('downloading file from Firebase\n')
+        # print('remote path: '+remote_url)
+        # print('local filename: '+local_filename+"\n")
         self.cloud_storage.child(remote_url).download(local_filename)
+        
+        print('\n')
+        print('file downloaded from Firebase')
+        print(local_filename)
+        print('\n')
 
     
     
@@ -108,6 +116,9 @@ class FirebaseClient:
         self.cloud_storage.child(self.drecorder.firebase_filename).put(self.drecorder.local_system_filename)
         fileUrl = self.cloud_storage.child(self.drecorder.firebase_filename).get_url("")
         self.write_database_with_file(fileUrl)
-        print('file uploaded to ze cloud!')
+        
+        print('\n')
+        print('file uploaded Firebase')
+        print('\n')
 
     

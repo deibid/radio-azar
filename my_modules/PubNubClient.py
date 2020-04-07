@@ -29,20 +29,22 @@ class PubNubClient:
             pprint(presence.__dict__)
 
         def message(self, pubnub, message):
-            print('message!!!!!!!!!!!!!')
+            
+            print('\n')
+            print('message from pubnub received')
+            print('\n')
         
-            if message.__dict__["message"]["content"] == "message_uploaded":
-                print('alguien publicó un nuevo archivo')
-                if message.__dict__["message"]["sender"] == pnconfig.uuid:
-                    print("alguien que no eres tu mandó un mensaje")
 
+            if message.__dict__["message"]["content"] == "message_uploaded":
+                if message.__dict__["message"]["sender"] == pnconfig.uuid:
+                    pass
                     # self._firebase_client.fetch_relevant_recordings()
 
                     # if False:
                     #     self._firebase_client.download_file('voice.wav')
                     #     self._drecorder.play_recording()
                     
-            pprint(message.__dict__)
+            # pprint(message.__dict__)
 
     def __init__(self,firebase_client, drecorder):
         self.pubnub = PubNub(pnconfig)
@@ -56,8 +58,11 @@ class PubNubClient:
         self.drecorder = drecorder
 
     def publish_callback(self,envelope, status):
-        print('full circle')
-        print(envelope, status)
+        # print('full circle')
+        print('\n')
+        print('pubnub message published')
+        print('\n')
+        # print(envelope, status)
 
     def broadcastUploadedMessage(self):
         self.pubnub.publish()\
