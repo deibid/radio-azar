@@ -32,14 +32,20 @@ class FirebaseClient:
         ref = self.db.child("messages/")
         key = ref.generate_key()
 
-        timestamp = pendulum.now().to_iso8601_string()
+        # timestamp = pendulum.now().to_iso8601_string()
+        
+
+        # timestamp = self.storage_utils.generate_filename_for_local_storage_download
+        timestamp = self.drecorder.get_timestamp()
+        cloud_path = self.storage_utils.generate_filename_for_cloud_storage(timestamp,self.uuid)
 
 
         data = {
             "playback-time":"tonight",
             "sender":self.uuid,
             "time": timestamp,
-            "audioUrl":url
+            "audioUrl":url,
+            "cloud-path":cloud_path
         }
 
 
@@ -63,10 +69,6 @@ class FirebaseClient:
         high_range  = self.date_utils.get_high_range_for_week()
 
         for message in all_messages.each():
-                        
-            # print(message.val()['playback-time'])
-            # print(message.val()['time'])
-
             db_date = pendulum.parse(message.val()['time'])
         
             if db_date >= low_range and db_date < high_range:
@@ -86,26 +88,23 @@ class FirebaseClient:
         this_weeks_messages = self.get_data_for_relevant_recordings()
 
         for msg in this_weeks_messages:
-            self.storage_utils.generate_filename_for_local_storage_download(msg)
-            
-        # objtener lista de urls
-        # bajar los archivos correspondientes
-
-        
-
-
-
+            local_filename = self.storage_utils.generate_filename_for_local_storage_download(msg)
+            remote_path = msg.val()['cloud-path']
+            self.download_file(remote_path,local_filename)
         
         
+    
 
+    def download_file(self,remote_url, local_filename):
+        print('downloading file from Firebase\n')
+        print('remote path: '+remote_url)
+        print('local filename: '+local_filename+"\n")
+        self.cloud_storage.child(remote_url).download(local_filename)
 
     
-    
-    def download_file(self,filename):
-        print('downloading file from Firebase')
-        self.cloud_storage.child("audio/"+filename).download("fb-"+filename)
     
     def upload_file(self,filename):
+
         self.cloud_storage.child(self.drecorder.firebase_filename).put(self.drecorder.local_system_filename)
         fileUrl = self.cloud_storage.child(self.drecorder.firebase_filename).get_url("")
         self.write_database_with_file(fileUrl)

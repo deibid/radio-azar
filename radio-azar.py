@@ -37,13 +37,12 @@ def finish_recording():
 
     drecorder.stop_recording()
     print('recording stopped...')
-    
     firebase_client.upload_file(drecorder.filename)
     pubnub_client.broadcastUploadedMessage()
 
 def download_file():
     print("play pressed")
-    firebase_client.download_file('voice.wav')
+    firebase_client.download_file('voice.wav','voice.wav')
 
 
 def playFiles():
@@ -67,12 +66,13 @@ def get_entries():
 
 
 # GPIO Events
-record_button.when_pressed = get_entries
-# record_button.when_pressed = start_recording
-# record_button.when_released = finish_recording
+# record_button.when_pressed = get_entries
+record_button.when_pressed = start_recording
+record_button.when_released = finish_recording
 
 # play_button.when_pressed = playFiles
-play_button.when_pressed = download_file
+# play_button.when_pressed = download_file
+play_button.when_pressed = get_entries
 # Listen for events
 pause()
 
