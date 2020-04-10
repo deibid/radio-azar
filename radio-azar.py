@@ -10,6 +10,7 @@ import pyrebase
 from my_modules.FirebaseClient import FirebaseClient
 from my_modules.PubNubClient import PubNubClient
 from my_modules.DRecorder import DRecorder
+from my_modules.DisplayController import DisplayController
 
 # Owner of this device.
 from my_modules.PubNubClient import UUID
@@ -19,8 +20,9 @@ record_button = Button(2)
 play_button = Button(3)
 
 
-drecorder = DRecorder(UUID)
-firebase_client = FirebaseClient(drecorder,UUID)
+display_controller = DisplayController()
+drecorder = DRecorder(UUID,display_controller)
+firebase_client = FirebaseClient(drecorder,UUID,display_controller)
 pubnub_client = PubNubClient(firebase_client,drecorder)
 
 

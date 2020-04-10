@@ -17,7 +17,7 @@ class FirebaseClient:
         "storageBucket": "radio-test-1-dae0f.appspot.com"
     }
 
-    def __init__(self, drecorder, uuid):    
+    def __init__(self, drecorder, uuid, display_controller):    
         self.firebase = pyrebase.initialize_app(self.firebase_config)
         self.cloud_storage = self.firebase.storage()
         self.db = self.firebase.database()

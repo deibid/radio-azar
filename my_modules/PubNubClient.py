@@ -39,10 +39,6 @@ class PubNubClient:
                 if message.__dict__["message"]["sender"] == pnconfig.uuid:
                     pass
                     # self._firebase_client.fetch_relevant_recordings()
-
-                    # if False:
-                    #     self._firebase_client.download_file('voice.wav')
-                    #     self._drecorder.play_recording()
                     
             # pprint(message.__dict__)
 
