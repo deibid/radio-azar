@@ -27,9 +27,9 @@ class DRecorder:
     self.record_command = 'arecord -D hw:1,0  -f cd '+ self.local_system_filename +' -c 1'
 
   def start_recording(self):
-    # print('start recording')
+    
     self.prepare_file()
-
+    
     self.display_controller.display_recording(rec=True)
 
     # Fancy stuff to make subprocess terminable
@@ -42,7 +42,7 @@ class DRecorder:
 
 
   def stop_recording(self):
-    # print('stop recording')
+    
     os.killpg(os.getpgid(self.sp.pid), signal.SIGTERM)
     self.display_controller.display_recording(rec=False)
     

@@ -12,20 +12,19 @@ from my_modules.FirebaseClient import FirebaseClient
 from my_modules.PubNubClient import PubNubClient
 from my_modules.DRecorder import DRecorder
 from my_modules.DisplayController import DisplayController
-
+from my_modules.AudioPlayer import AudioPlayer
 # Owner of this device.
 from my_modules.PubNubClient import UUID
 
-
-record_button = Button(2, hold_time = 1.5)
-# play_button = Button(3)
-
-
 display_controller = DisplayController()
+audio_player = AudioPlayer(display_controller)
 drecorder = DRecorder(UUID,display_controller)
-firebase_client = FirebaseClient(drecorder,UUID,display_controller)
+firebase_client = FirebaseClient(drecorder,UUID, audio_player)
 pubnub_client = PubNubClient(firebase_client,drecorder)
 
+
+
+record_button = Button(2, hold_time = 1.5)
 
 class States(Enum):
     stand_by = 0
@@ -33,8 +32,6 @@ class States(Enum):
     playing = 2
 
 state = States.stand_by
-
-# is_recording = False
 
 
 def main():
@@ -75,6 +72,13 @@ if __name__ == "__main__":
 def get_entries():
     print('get entries')
     firebase_client.fetch_relevant_recordings()
+    
+    num_messages = audio_player.len()
+    display_controller.display_message_counter(num_messages)
+    
+    # temporal, move to a play_file funciton
+    audio_player.play_files()
+
 
 def handle_button_release():
     
@@ -94,20 +98,11 @@ def handle_button_release():
         state = States.stand_by
         
 
-    # is_recording = not is_recording
-
 
 # GPIO Events
-# record_button.when_pressed = get_entries
-# record_button.when_pressed = start_recording
-# record_button.when_released = finish_recording
-
 record_button.when_released = handle_button_release
-record_button.when_held = play_files
-
-# play_button.when_pressed = playFiles
-# play_button.when_pressed = download_file
-# play_button.when_pressed = get_entries
+# record_button.when_held = play_files
+record_button.when_held = get_entries
 # Listen for events
 pause()
 
