@@ -4,7 +4,6 @@ from signal import pause
 from time import sleep
 from datetime import datetime
 import os
-import pygame
 import pyrebase
 from enum import Enum
 
@@ -18,37 +17,43 @@ from my_modules.PubNubClient import UUID
 
 display_controller = DisplayController()
 audio_player = AudioPlayer(display_controller)
-drecorder = DRecorder(UUID,display_controller)
-firebase_client = FirebaseClient(drecorder,UUID, audio_player)
-pubnub_client = PubNubClient(firebase_client,drecorder)
+drecorder = DRecorder(UUID, display_controller)
+firebase_client = FirebaseClient(drecorder, UUID, audio_player)
+pubnub_client = PubNubClient(firebase_client, drecorder, display_controller)
 
 
+record_button = Button(2, bounce_time=0.0015, hold_time=1.5)
 
-record_button = Button(2, hold_time = 1.5)
 
 class States(Enum):
     stand_by = 0
     recording = 1
     playing = 2
 
+
 state = States.stand_by
 
 
 def main():
     print("app is ready")
-    
+    initialize_display()
+
+
 def start_recording():
     drecorder.start_recording()
+
 
 def finish_recording():
 
     drecorder.stop_recording()
+    print('before fc upload in main')
     firebase_client.upload_file(drecorder.filename)
     pubnub_client.broadcastUploadedMessage()
 
+
 def download_file():
     print("play pressed")
-    firebase_client.download_file('voice.wav','voice.wav')
+    firebase_client.download_file('voice.wav', 'voice.wav')
 
 
 def play_files():
@@ -56,32 +61,41 @@ def play_files():
     state = States.playing
     print("started playing with held")
 
-    # pygame.mixer.music.load(drecorder.filename)
-    # pygame.mixer.music.play()
-    # while pygame.mixer.music.get_busy():
-    #     sleep(1)
-    # print("finished playing")
 
-# Audio setup. possibly might go away
-pygame.mixer.init()
+def initialize_display():
+    num_messages = firebase_client.num_relevant_recordings()
+    display_controller.display_message_counter(num_messages)
+
 
 if __name__ == "__main__":
     main()
 
 
 def get_entries():
+
+    global state
+
+    if state != States.stand_by:
+        print('was not in stand_by, will not play recordings')
+        return
+
     print('get entries')
+    state = States.playing
+    # return
+
     firebase_client.fetch_relevant_recordings()
-    
+
     num_messages = audio_player.len()
     display_controller.display_message_counter(num_messages)
-    
+
     # temporal, move to a play_file funciton
     audio_player.play_files()
 
+    state = States.stand_by
+
 
 def handle_button_release():
-    
+
     global state
 
     if state == States.playing:
@@ -91,12 +105,13 @@ def handle_button_release():
     elif state == States.stand_by:
         print('recording is going to start')
         state = States.recording
-        # start_recording()
+        # sleep(0.02)
+        start_recording()
     elif state == States.recording:
         print('recording is going to finish')
-        # finish_recording()
+        # sleep(0.02)
+        finish_recording()
         state = States.stand_by
-        
 
 
 # GPIO Events
@@ -105,5 +120,3 @@ record_button.when_released = handle_button_release
 record_button.when_held = get_entries
 # Listen for events
 pause()
-
-
