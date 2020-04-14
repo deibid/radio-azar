@@ -22,7 +22,7 @@ firebase_client = FirebaseClient(drecorder, UUID, audio_player)
 pubnub_client = PubNubClient(firebase_client, drecorder, display_controller)
 
 
-record_button = Button(2, bounce_time=0.0015, hold_time=1.5)
+record_button = Button(2, bounce_time=0.0018, hold_time=1.5)
 
 
 class States(Enum):
@@ -47,6 +47,7 @@ def finish_recording():
 
     drecorder.stop_recording()
     print('before fc upload in main')
+    sleep(1)
     firebase_client.upload_file(drecorder.filename)
     pubnub_client.broadcastUploadedMessage()
 

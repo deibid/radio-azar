@@ -111,7 +111,10 @@ class FirebaseClient:
     def upload_file(self, filename):
 
         print('before fc upload in fc')
-
+        print('file to upload->')
+        print(self.drecorder.local_system_filename)
+        print('firebase dir to upload to->')
+        print(self.drecorder.firebase_filename)
         self.cloud_storage.child(self.drecorder.firebase_filename).put(
             self.drecorder.local_system_filename)
         # fileUrl = self.cloud_storage.child(
