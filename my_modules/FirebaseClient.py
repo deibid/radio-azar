@@ -66,17 +66,20 @@ class FirebaseClient:
         low_range = self.date_utils.get_low_range_for_week()
         high_range = self.date_utils.get_high_range_for_week()
 
-        for message in all_messages.each():
-            db_date = pendulum.parse(message.val()['time'])
+        print('all messages ->')
+        print(all_messages.__dict__)
+        if all_messages.__dict__['pyres'] != None:
+            for message in all_messages.each():
+                db_date = pendulum.parse(message.val()['time'])
 
-            if db_date >= low_range and db_date < high_range:
-                # turn on this line if you want to exclude your messages
-                # if(message.val()["sender"] != self.uuid)
-                this_weeks_messages.append(message)
+                if db_date >= low_range and db_date < high_range:
+                    # turn on this line if you want to exclude your messages
+                    # if(message.val()["sender"] != self.uuid)
+                    this_weeks_messages.append(message)
 
-        # sorts the messages based on time. First message sent is at the top and last at the bottom
-        this_weeks_messages = sorted(
-            this_weeks_messages, key=self.date_utils.sort_criteria)
+            # sorts the messages based on time. First message sent is at the top and last at the bottom
+            this_weeks_messages = sorted(
+                this_weeks_messages, key=self.date_utils.sort_criteria)
         return this_weeks_messages
 
     def num_relevant_recordings(self):
