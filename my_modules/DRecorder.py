@@ -12,6 +12,8 @@ class DRecorder:
     storage_utils = StorageUtils()
     record_command = 'arecord -D hw:1,0  -f cd -t wav test.wav -c 1'
 
+    start_timestamp = 0
+
     def __init__(self, uuid, display_controller):
         self.uuid = uuid
         self.display_controller = display_controller
@@ -32,6 +34,7 @@ class DRecorder:
 
     def start_recording(self):
 
+        self.start_timestamp = pendulum.now()
         self.prepare_file()
 
         self.display_controller.display_recording(rec=True)
@@ -59,3 +62,7 @@ class DRecorder:
 
     def get_timestamp(self):
         return self.date.to_iso8601_string()
+
+    def get_recording_length(self):
+        now = pendulum.now()
+        return (now - self.start_timestamp).seconds

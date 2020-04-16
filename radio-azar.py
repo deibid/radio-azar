@@ -119,8 +119,12 @@ def handle_button_release():
     elif state == States.recording:
         print('recording is going to finish')
         # sleep(0.02)
-        finish_recording()
-        state = States.stand_by
+        length = drecorder.get_recording_length()
+        if length > 2:
+            finish_recording()
+            state = States.stand_by
+        else:
+            print('ignored press, recording too short')
 
 
 # GPIO Events
