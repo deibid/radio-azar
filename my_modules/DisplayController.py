@@ -91,5 +91,5 @@ class DisplayController:
 
     def stop_loading(self):
         self.KILL_THREAD = True
-        self.thread.join()
+        # self.thread.join()
         self.turn_off()
