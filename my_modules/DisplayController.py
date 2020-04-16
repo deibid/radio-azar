@@ -1,7 +1,12 @@
 from gpiozero import PWMLED
+from time import sleep
+import threading
 
 
 class DisplayController:
+
+    KILL_THREAD = False
+    thread = None
 
     DISPLAY_CONFIGURATIONS = [
         [0, 0, 0, 0, 0],  # 0
@@ -43,7 +48,7 @@ class DisplayController:
     def display_recording(self, rec=False):
 
         if(rec):
-            self.recording_led.pulse(fade_in_time=1, fade_out_time=1.5)
+            self.recording_led.pulse(fade_in_time=1, fade_out_time=1)
         else:
             self.recording_led.off()
 
@@ -52,3 +57,39 @@ class DisplayController:
 
     def decrease_display_count(self):
         self.display_message_counter(self.num_messages-1)
+
+    def turn_off(self):
+        for l in self.leds:
+            l.off()
+
+    def run_loading_sequence(self):
+
+        i = 0
+        mode = 'up'
+        while self.KILL_THREAD != True:
+
+            self.turn_off()
+            self.leds[i].value = self.BRIGHTNESS
+
+            if mode == 'up':
+                i = i + 1
+            elif mode == 'down':
+                i = i - 1
+
+            if i == 0:
+                mode = "up"
+
+            if i == 4:
+                mode = 'down'
+
+            sleep(.3)
+
+    def display_loading(self):
+
+        self.thread = threading.Thread(target=self.run_loading_sequence)
+        self.thread.start()
+
+    def stop_loading(self):
+        self.KILL_THREAD = True
+        self.thread.join()
+        self.turn_off()

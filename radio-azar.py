@@ -45,11 +45,17 @@ def start_recording():
 
 def finish_recording():
 
+    display_controller.display_loading()
     drecorder.stop_recording()
     print('before fc upload in main')
     sleep(1)
+
     firebase_client.upload_file(drecorder.filename)
+    display_controller.stop_loading()
     pubnub_client.broadcastUploadedMessage()
+
+    # num_messages = audio_player.len()
+    # display_controller.display_message_counter(num_messages)
 
 
 def download_file():
@@ -84,9 +90,11 @@ def get_entries():
     state = States.playing
     # return
 
+    display_controller.display_loading()
     firebase_client.fetch_relevant_recordings()
 
     num_messages = audio_player.len()
+    display_controller.stop_loading()
     display_controller.display_message_counter(num_messages)
 
     # temporal, move to a play_file funciton

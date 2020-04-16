@@ -39,6 +39,7 @@ class PubNubClient:
             print('\n')
 
             if message.__dict__["message"]["content"] == "message_uploaded":
+                # self.display_controller.stop_loading()
                 num_messages = self.firebase_client.num_relevant_recordings()
                 self.display_controller.display_message_counter(num_messages)
                 # if message.__dict__["message"]["sender"] == pnconfig.uuid:
