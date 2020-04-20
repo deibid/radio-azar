@@ -2,3 +2,4 @@ __pychache__/
 my_modules/__pychache__/
 audio/my_recordings
 audio/others_recordings
+.env

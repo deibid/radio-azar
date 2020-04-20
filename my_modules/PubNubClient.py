@@ -4,9 +4,16 @@ from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
 from pprint import pprint
 
+from dotenv import load_dotenv
+import os
+
 
 EVENT_UPLOADED_MESSAGE = "message_uploaded"
-UUID = "david"
+
+load_dotenv()
+UUID = os.getenv("uuid")
+print("UUID desde dotenv es->")
+print(UUID)
 
 pnconfig = PNConfiguration()
 pnconfig.subscribe_key = "sub-c-5640dcb4-620c-11ea-9a99-f2f107c29c38"
