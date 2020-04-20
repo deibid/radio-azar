@@ -26,6 +26,8 @@ class DisplayController:
         self.leds = [PWMLED(23), PWMLED(24), PWMLED(25), PWMLED(8), PWMLED(7)]
         self.recording_led = PWMLED(1)
         self.num_messages = 0
+        # self.thread = threading.Thread(target=self.run_loading_sequence)
+        # self.thread.start()
 
     def display_message_counter(self, num_messages):
 
@@ -62,34 +64,11 @@ class DisplayController:
         for l in self.leds:
             l.off()
 
-    def run_loading_sequence(self):
+    def display_loading(self, _sleep=.15, _in=.3, _out=.95):
 
-        i = 0
-        mode = 'up'
-        while self.KILL_THREAD != True:
-
-            self.turn_off()
-            self.leds[i].value = self.BRIGHTNESS
-
-            if mode == 'up':
-                i = i + 1
-            elif mode == 'down':
-                i = i - 1
-
-            if i == 0:
-                mode = "up"
-
-            if i == 4:
-                mode = 'down'
-
-            sleep(.3)
-
-    def display_loading(self):
-
-        self.thread = threading.Thread(target=self.run_loading_sequence)
-        self.thread.start()
+        for l in self.leds:
+            l.pulse(fade_in_time=_in, fade_out_time=_out)
+            sleep(_sleep)
 
     def stop_loading(self):
-        self.KILL_THREAD = True
-        # self.thread.join()
         self.turn_off()
