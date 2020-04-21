@@ -71,3 +71,10 @@ class DisplayController:
     def stop_loading(self):
 
         self.turn_off()
+
+    def display_downloading(self, _sleep=.15, _in=.3, _out=.95):
+
+        self.turn_off()
+        for l in reversed(self.leds):
+            l.pulse(fade_in_time=_in, fade_out_time=_out)
+            sleep(_sleep)

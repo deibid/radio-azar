@@ -92,7 +92,7 @@ def get_entries():
     state = States.playing
     # return
 
-    display_controller.display_loading()
+    display_controller.display_downloading()
     firebase_client.fetch_relevant_recordings()
 
     num_messages = audio_player.len()
