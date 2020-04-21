@@ -9,16 +9,12 @@ class DisplayController:
     thread = None
 
     DISPLAY_CONFIGURATIONS = [
-        [0, 0, 0, 0, 0],  # 0
+        # [0, 0, 0, 0, 0],  # 0
         [1, 0, 0, 0, 0],  # 1
         [1, 1, 0, 0, 0],  # 2
         [1, 1, 1, 0, 0],  # 3
         [1, 1, 1, 1, 0],  # 4
-        [1, 1, 1, 1, 1],  # 5
-        [0, 1, 1, 1, 1],  # 6
-        [0, 0, 1, 1, 1],  # 7
-        [0, 0, 0, 1, 1],  # 8
-        [0, 0, 0, 0, 1]]  # 9
+        [1, 1, 1, 1, 1]]  # 5
 
     BRIGHTNESS = 0.35
 
@@ -26,16 +22,16 @@ class DisplayController:
         self.leds = [PWMLED(23), PWMLED(24), PWMLED(25), PWMLED(8), PWMLED(7)]
         self.recording_led = PWMLED(1)
         self.num_messages = 0
-        # self.thread = threading.Thread(target=self.run_loading_sequence)
-        # self.thread.start()
 
     def display_message_counter(self, num_messages):
 
         self.num_messages = num_messages
-        # truncate the max led to 9
-        if num_messages > 9:
-            num_messages = 9
+        if num_messages == 0:
+            self.turn_off()
+            return
 
+        # rollover after 5 back to 1
+        num_messages = (num_messages % 5) - 1
         config = self.DISPLAY_CONFIGURATIONS[num_messages]
 
         i = 0
@@ -50,6 +46,7 @@ class DisplayController:
     def display_recording(self, rec=False):
 
         if(rec):
+            self.turn_off()
             self.recording_led.pulse(fade_in_time=1, fade_out_time=1)
         else:
             self.recording_led.off()
@@ -60,15 +57,17 @@ class DisplayController:
     def decrease_display_count(self):
         self.display_message_counter(self.num_messages-1)
 
-    def turn_off(self):
+    def turn_off(self, fade_out=False):
         for l in self.leds:
             l.off()
 
     def display_loading(self, _sleep=.15, _in=.3, _out=.95):
 
+        self.turn_off()
         for l in self.leds:
             l.pulse(fade_in_time=_in, fade_out_time=_out)
             sleep(_sleep)
 
     def stop_loading(self):
+
         self.turn_off()

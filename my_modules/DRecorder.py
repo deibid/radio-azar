@@ -66,3 +66,8 @@ class DRecorder:
     def get_recording_length(self):
         now = pendulum.now()
         return (now - self.start_timestamp).seconds
+
+    def clear_filenames(self):
+        self.filename = None
+        self.local_system_filename = None
+        self.firebase_filename = None

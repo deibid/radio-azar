@@ -54,6 +54,8 @@ def finish_recording():
     display_controller.stop_loading()
     pubnub_client.broadcastUploadedMessage()
 
+    drecorder.clear_filenames()
+
     # num_messages = audio_player.len()
     # display_controller.display_message_counter(num_messages)
 
