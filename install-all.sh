@@ -15,4 +15,6 @@ pip3 install pendulum
 echo "\n\n--------------\n\n"
 pip3 install python-dotenv
 echo "\n\n--------------\n\n"
+sudo apt-get install byobu
+echo "\n\n--------------\n\n"
 echo "All libs installed! - Ready for Radio Azar"
