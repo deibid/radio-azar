@@ -78,3 +78,21 @@ class DisplayController:
         for l in reversed(self.leds):
             l.pulse(fade_in_time=_in, fade_out_time=_out)
             sleep(_sleep)
+
+    def display_fetch_error(self):
+
+        self.turn_off()
+        for l in self.leds:
+            l.blink(on_time=.2, off_time=.2, n=2)
+            # blink(on_time=1, off_time=1, fade_in_time=0, fade_out_time=0, n=None, background=True)
+        sleep(.2*2*2)
+        self.display_message_counter(self.num_messages)
+
+    def display_device_ready(self):
+
+        for l in self.leds:
+            l.pulse(fade_in_time=.36, fade_out_time=.36, n=1, background=True)
+            sleep(.12)
+            # fade_in_time=1, fade_out_time=1, n=None, background=True
+
+        sleep(.8)

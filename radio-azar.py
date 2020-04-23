@@ -4,8 +4,10 @@ from signal import pause
 from time import sleep
 from datetime import datetime
 import os
+import subprocess
 import pyrebase
 from enum import Enum
+import pendulum
 
 from my_modules.FirebaseClient import FirebaseClient
 from my_modules.PubNubClient import PubNubClient
@@ -29,6 +31,7 @@ class States(Enum):
     stand_by = 0
     recording = 1
     playing = 2
+    fetching = 3
 
 
 state = States.stand_by
@@ -37,6 +40,7 @@ state = States.stand_by
 def main():
     print("app is ready")
     initialize_display()
+    renew_recorder()
 
 
 def start_recording():
@@ -72,8 +76,14 @@ def play_files():
 
 
 def initialize_display():
+    display_controller.display_device_ready()
     num_messages = firebase_client.num_relevant_recordings()
     display_controller.display_message_counter(num_messages)
+
+
+def renew_recorder():
+    subprocess.Popen("pkill arecord", stdout=subprocess.PIPE,
+                     shell=True, preexec_fn=os.setsid)
 
 
 if __name__ == "__main__":
@@ -84,8 +94,20 @@ def get_entries():
 
     global state
 
+    if state == States.recording:
+        print('recording, will not fetch recordings')
+        return
+
     if state != States.stand_by:
         print('was not in stand_by, will not play recordings')
+        return
+
+    n = pendulum.now()
+
+    if n.hour < 20:
+        state = States.fetching
+        print('too early to listen to messages')
+        display_controller.display_fetch_error()
         return
 
     print('get entries')
@@ -108,6 +130,11 @@ def get_entries():
 def handle_button_release():
 
     global state
+
+    if state == States.fetching:
+        print('release from fetch')
+        state = States.stand_by
+        return
 
     if state == States.playing:
         print('estas playing, no hagas nada')
