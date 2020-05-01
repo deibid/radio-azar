@@ -16,7 +16,7 @@ class DisplayController:
         [1, 1, 1, 1, 0],  # 4
         [1, 1, 1, 1, 1]]  # 5
 
-    BRIGHTNESS = 0.35
+    BRIGHTNESS = 0.10
 
     def __init__(self):
         self.leds = [PWMLED(23), PWMLED(24), PWMLED(25), PWMLED(8), PWMLED(7)]
@@ -96,3 +96,10 @@ class DisplayController:
             # fade_in_time=1, fade_out_time=1, n=None, background=True
 
         sleep(.8)
+
+    def display_message_playing(self):
+        self.turn_off()
+        self.display_message_counter(self.num_messages)
+
+        num_messages = (self.num_messages % 5) - 1
+        self.leds[num_messages].pulse()

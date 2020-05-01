@@ -104,7 +104,8 @@ def get_entries():
 
     n = pendulum.now()
 
-    if n.hour < 20:
+    if n.hour < 0:
+        # if n.hour < 20:
         state = States.fetching
         print('too early to listen to messages')
         display_controller.display_fetch_error()

@@ -37,4 +37,3 @@ class DateUtils:
     @staticmethod
     def create_date_from_timestamp(timestamp):
         return pendulum.parse(timestamp)
-
