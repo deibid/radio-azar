@@ -13,6 +13,6 @@ Both of the previous scripts use "byobu", a terminal multiplexer that allows me 
 
 ## Project Documentation
 In this repo you'll only find the code for the home device. The creative process, the "why" of this project can be found here:
-[Link](https://www.davidazar.mx/family-time)
+[Link](https://www.davidazar.mx/homelog)
 
 
